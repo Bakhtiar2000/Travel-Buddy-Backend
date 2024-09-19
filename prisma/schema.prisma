@@ -8,12 +8,64 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String               @id @default(uuid())
+  name               String
+  email              String               @unique
+  password           String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  trip               Trip[]
+  profile            Profile?
+  travelBuddyRequest TravelBuddyRequest[]
 
   @@map("users")
+}
+
+model Trip {
+  id          String   @id @default(uuid())
+  userId      String
+  destination String
+  startDate   String
+  endDate     String
+  budget      Int
+  activities  String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user               User                 @relation(fields: [userId], references: [id])
+  travelBuddyRequest TravelBuddyRequest[]
+
+  @@map("trips")
+}
+
+model TravelBuddyRequest {
+  id        String   @id @default(uuid())
+  tripId    String
+  userId    String
+  status    Status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  trip      Trip     @relation(fields: [tripId], references: [id])
+
+  @@unique([userId, tripId])
+  @@map("requests")
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  bio       String
+  age       Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("profiles")
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
 }
