@@ -11,7 +11,7 @@ app.use(cors());
 // Parsers / MiddleWears
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/v1", router);
+app.use("/api/", router);
 app.use(globalErrorHandler);
 app.use(notFound);
 
