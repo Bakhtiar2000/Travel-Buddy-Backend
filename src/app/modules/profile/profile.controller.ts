@@ -15,6 +15,18 @@ const getAllProfiles: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateProfile: RequestHandler = catchAsync(async (req, res) => {
+  const token = req.headers.authorization;
+  const result = await profileServices.updateProfileIntoDB(token, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User profile updated successfully",
+    data: result,
+  });
+});
+
 export const profileControllers = {
   getAllProfiles,
+  updateProfile,
 };
