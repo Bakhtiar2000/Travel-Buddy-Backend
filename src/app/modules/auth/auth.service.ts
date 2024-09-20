@@ -1,5 +1,8 @@
 import bcrypt from "bcrypt";
 import prisma from "../../utils/prisma";
+import { generateToken } from "./auth.utils";
+import config from "../../config";
+import { Secret } from "jsonwebtoken";
 
 type TRegisterData = {
   name: string;
@@ -43,6 +46,47 @@ const registerUser = async (payload: TRegisterData) => {
   return result;
 };
 
+const loginUser = async (payload: { email: string; password: string }) => {
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      email: payload.email,
+    },
+  });
+
+  const isCorrectPassword: boolean = await bcrypt.compare(
+    payload.password,
+    userData.password
+  );
+  if (!isCorrectPassword) {
+    throw new Error("Password is incorrect");
+  }
+
+  const tokenPayload = {
+    email: userData.email,
+    name: userData.name,
+  };
+
+  const accessToken = generateToken(
+    tokenPayload,
+    config.access_token_secret as Secret,
+    config.access_token_expires_in as string
+  );
+  const refreshToken = generateToken(
+    tokenPayload,
+    config.refresh_token_secret as Secret,
+    config.refresh_token_expires_in as string
+  );
+
+  return {
+    id: userData.id,
+    name: userData.name,
+    email: userData.email,
+    accessToken,
+    refreshToken,
+  };
+};
+
 export const authServices = {
   registerUser,
+  loginUser,
 };
