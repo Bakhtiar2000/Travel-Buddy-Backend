@@ -12,5 +12,10 @@ router.post(
 );
 
 router.get("/", tripControllers.getAllTrips);
+router.post(
+  "/:tripId/request",
+  validateRequest(tripValidations.sendTravelBuddyRequestValidationSchema),
+  tripControllers.sendTravelBuddyRequest
+);
 
 export const tripRoutes = router;

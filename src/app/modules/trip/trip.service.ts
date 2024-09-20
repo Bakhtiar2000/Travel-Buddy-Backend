@@ -3,7 +3,7 @@ import prisma from "../../utils/prisma";
 import { verifyToken } from "../auth/auth.utils";
 import config from "../../config";
 import { TPaginationOptions } from "../../interfaces/pagination";
-import { Prisma } from "@prisma/client";
+import { Prisma, Status } from "@prisma/client";
 import calculatePagination from "../../utils/calculatePagination";
 import { tripSearchableFields } from "./trip.constant";
 
@@ -87,7 +87,23 @@ const getAllTripsFromDB = async (params: any, options: TPaginationOptions) => {
   };
 };
 
+const sendTravelBuddyRequest = async (tripId: string, userId: string) => {
+  console.log(tripId, userId);
+  const createdTravelBuddyRequest = prisma.travelBuddyRequest.create({
+    data: {
+      tripId: tripId,
+      userId: userId,
+      status: Status.PENDING,
+    },
+  });
+
+  return createdTravelBuddyRequest;
+};
+
+const x = async () => {};
+
 export const tripServices = {
   createTripIntoDB,
   getAllTripsFromDB,
+  sendTravelBuddyRequest,
 };

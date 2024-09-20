@@ -10,7 +10,7 @@ const createTrip: RequestHandler = catchAsync(async (req, res) => {
   const token = req.headers.authorization;
   const result = await tripServices.createTripIntoDB(token, req.body);
   sendResponse(res, {
-    statusCode: 201,
+    statusCode: httpStatus.CREATED,
     success: true,
     message: "Trip created successfully",
     data: result,
@@ -29,7 +29,21 @@ const getAllTrips: RequestHandler = catchAsync(async (req, res) => {
     data: result.data,
   });
 });
+
+const sendTravelBuddyRequest: RequestHandler = catchAsync(async (req, res) => {
+  const result = await tripServices.sendTravelBuddyRequest(
+    req.params.tripId,
+    req.body.userId
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: "Travel buddy request sent successfully",
+    data: result,
+  });
+});
 export const tripControllers = {
   createTrip,
   getAllTrips,
+  sendTravelBuddyRequest,
 };

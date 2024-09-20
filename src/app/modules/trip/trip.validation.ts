@@ -10,6 +10,13 @@ const createTripValidationSchema = z.object({
   }),
 });
 
+const sendTravelBuddyRequestValidationSchema = z.object({
+  body: z.object({
+    userId: z.string(),
+  }),
+});
+
 export const tripValidations = {
   createTripValidationSchema,
+  sendTravelBuddyRequestValidationSchema,
 };
