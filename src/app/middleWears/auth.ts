@@ -5,7 +5,7 @@ import ApiError from "../errors/apiError";
 import httpStatus from "http-status";
 import { verifyToken } from "../modules/auth/auth.utils";
 
-const auth = (...roles: string[]) => {
+const auth = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.headers.authorization;
