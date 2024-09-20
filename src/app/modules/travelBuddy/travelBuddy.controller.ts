@@ -16,6 +16,22 @@ const getAllTravelBuddies: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const respondToTravelBuddyRequest: RequestHandler = catchAsync(
+  async (req, res) => {
+    const result = await travelBuddyServices.respondToTravelBuddyRequest(
+      req.params.buddyId,
+      req.body
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Travel buddy request responded successfully",
+      data: result,
+    });
+  }
+);
+
 export const travelBuddyControllers = {
   getAllTravelBuddies,
+  respondToTravelBuddyRequest,
 };

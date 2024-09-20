@@ -6,11 +6,7 @@ import httpStatus from "http-status";
 import { verifyToken } from "../modules/auth/auth.utils";
 
 const auth = (...roles: string[]) => {
-  return async (
-    req: Request & { user?: any },
-    res: Response,
-    next: NextFunction
-  ) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.headers.authorization;
       if (!token) {
@@ -21,8 +17,7 @@ const auth = (...roles: string[]) => {
         config.access_token_secret as Secret
       );
 
-      req.user = verifiedUser;
-      if (roles.length && !roles.includes(verifiedUser.role)) {
+      if (!verifiedUser) {
         throw new ApiError(httpStatus.FORBIDDEN, "Unauthorized Access");
       }
       next();
