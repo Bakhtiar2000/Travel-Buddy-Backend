@@ -88,7 +88,6 @@ const getAllTripsFromDB = async (params: any, options: TPaginationOptions) => {
 };
 
 const sendTravelBuddyRequest = async (tripId: string, userId: string) => {
-  console.log(tripId, userId);
   const createdTravelBuddyRequest = prisma.travelBuddyRequest.create({
     data: {
       tripId: tripId,
