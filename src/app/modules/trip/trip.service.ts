@@ -99,8 +99,6 @@ const sendTravelBuddyRequest = async (tripId: string, userId: string) => {
   return createdTravelBuddyRequest;
 };
 
-const x = async () => {};
-
 export const tripServices = {
   createTripIntoDB,
   getAllTripsFromDB,
